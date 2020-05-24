@@ -47,7 +47,7 @@ def create_calendar():
                                                    "\n".join(max_for_display), title="בטוח?")
                         if response == 'Yes':
                             publish(values_to_publish, dates[FIRST_D])
-                            email(volunteers, SHIFTS_LINK)
+                            #email(volunteers, SHIFTS_LINK)
                             HebrewPopup("העלינו את השיבוצים ל-לוח משמרות- בגוגל-שיטס ושלחנו מיילים לכולם! נתראה בחודש הבא :)", title="סיום ויציאה", non_blocking=False)
                             break
                 except APIError as e:
@@ -82,6 +82,8 @@ def create_calendar():
                         changed_volunteers = slot.assign_volunteer(volunteer)
                     else:
                         changed_volunteers = slot.release_assignment()
+                    for v in changed_volunteers:
+                        volunteers[v.name] = v
 
                     update_window(calendar_window, changed_volunteers, index + 1, events, slot.get_value())
 

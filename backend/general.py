@@ -22,11 +22,12 @@ def create_shifts_dict(data, day_types):
         shifts_dict.update({day_type: []})
     for row in data:
         day_type = row['יום']
-        time = row['משמרת']
-        role = row['תפקיד']
-        head_count = row['אנשים']
-        for i in range(head_count):
-            shifts_dict[day_type].append(Shift(time, role, i))
+        if day_type != "":
+            time = row['משמרת']
+            role = row['סוג תפקיד']
+            head_count = row['אנשים']
+            for i in range(head_count):
+                shifts_dict[day_type].append(Shift(time, role, i))
     return shifts_dict
 
 
@@ -43,9 +44,9 @@ def get_dates(spreadsheet):
 
 
 def create_calendar(spreadsheet, dt, last_date):
-    shifts = 'משמרות'
-    shifts_sheet = get_sheet(spreadsheet, shifts)
-    data = get_data(shifts_sheet)
+    main = 'Manager'
+    main_sheet = get_sheet(spreadsheet, main)
+    data = get_data(main_sheet)
     day_types = ['שבת', 'שישי', 'חול']
     shifts_dict = create_shifts_dict(data, day_types)
 
