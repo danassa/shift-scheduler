@@ -1,102 +1,8 @@
-from numbers import Number
 import PySimpleGUI as sg
-from gspread.exceptions import APIError
-from backend.hebrew import HebrewPopup
 from backend.general import *
+from backend.hard_drive import restore_old_values
 from constants import *
-import queue
 
-
-def create_calendar():
-    sg.theme(THEME)
-    gui_queue = queue.Queue()
-
-    dates, calendar, volunteers = pull_data()
-    week_windows, calendar, volunteers = initialize_windows(dates, calendar, volunteers)
-    index = 0
-    calendar_window = week_windows[index]
-    calendar_window.un_hide()
-
-    while True:
-        try:
-            events, values = calendar_window.read()
-            if events is None or events == 'Exit':
-                response = sg.popup_yes_no("האם תרצה לשמור את שיבוצים לפני היציאה?")
-                if response == 'Yes':
-                    save(calendar, volunteers)
-                    calendar_window.close()
-                elif response == 'No':
-                    calendar_window.close()
-                break
-            elif events == MENU_NEW:
-                old_windows = week_windows
-                week_windows, calendar, volunteers = initialize_windows(*create_new_values())
-                index = 0
-                calendar_window = week_windows[index]
-                calendar_window.un_hide()
-                for window in old_windows:
-                    window.close()
-            elif events == MENU_SAVE:
-                save(calendar, volunteers)
-            elif events == MENU_CLOSE:
-                try:
-                    values_to_publish, empty_slots = get_calender_values(calendar, dates[FIRST_D], dates[LAST_D])
-                    if empty_slots:
-                        max_for_display = empty_slots[0:10]
-                        response = sg.popup_yes_no("ישנן משמרות ללא שיבוץ, ראה דוגמאות למטה. האם אתה עדיין מעוניין לפרסם את הלוח?",
-                                                   "\n".join(max_for_display), title="בטוח?")
-                        if response == 'Yes':
-                            publish(values_to_publish, dates[FIRST_D])
-                            #email(volunteers, SHIFTS_LINK)
-                            HebrewPopup("העלינו את השיבוצים ל-לוח משמרות- בגוגל-שיטס ושלחנו מיילים לכולם! נתראה בחודש הבא :)", title="סיום ויציאה", non_blocking=False)
-                            break
-                except APIError as e:
-                    HebrewPopup("נכשל בפרסום לוח המשמרות", e.args[0]['message'], non_blocking=False)
-
-            elif events == MENU_UPDATE:
-                calendar, volunteers = update_requests_with_minimal_calendar_changes(calendar, volunteers)
-                save(calendar, volunteers)
-                HebrewPopup("התוכנה נסגרת על מנת להשלים את העדכון.", "בפתיחה הבאה תוכל לראות את הבקשות המעודכנות.", non_blocking=False)
-                break
-            elif events == B_NEXT:
-                if index < len(week_windows)-1:
-                    index = index + 1
-                    calendar_window = switch_week_window(week_windows, volunteers, index, index - 1)
-            elif events == B_PREV:
-                if index > 0:
-                    index = index - 1
-                    calendar_window = switch_week_window(week_windows, volunteers, index, index + 1)
-            else:
-                parts = events.split("|")
-                if parts[0] == NAME:
-                    volunteer = volunteers[parts[1]]
-                    HebrewPopup(volunteer.get_options_as_string(index + 1), volunteer.get_assignments_as_string(index + 1),
-                                title=volunteer.name, font=FONT_12)
-                else:
-                    pick = values[events]
-                    slot = find_slot_by_drop_down_string(parts, calendar)
-
-                    if not isinstance(pick, Number):
-                        volunteer = volunteers[pick]
-                        volunteer.is_valid_assignment(slot, gui_queue)
-                        changed_volunteers = slot.assign_volunteer(volunteer)
-                    else:
-                        changed_volunteers = slot.release_assignment()
-                    for v in changed_volunteers:
-                        volunteers[v.name] = v
-
-                    update_window(calendar_window, changed_volunteers, index + 1, events, slot.get_value())
-
-            try:
-                response = gui_queue.get_nowait()
-                HebrewPopup(response, title='')
-            except queue.Empty:
-                pass
-
-        except UnicodeDecodeError:
-            continue
-
-    calendar_window.close()
 
 def switch_week_window(week_windows, volunteers, new_index, old_index):
     calendar_window = week_windows[new_index]
@@ -161,6 +67,7 @@ def pull_data():
         dates, calendar, volunteers = create_new_values()
     return dates, calendar, volunteers
 
+
 def initialize_windows(dates, calendar, volunteers):
     windows = []
     last_date = dates[LAST_D]
@@ -193,9 +100,9 @@ def create_volunteers_table(volunteers, week):
     sorted_volunteers = sorted(subset, key=lambda x: x[0])
 
     input_rows = [[sg.Text(text=v[2], font=FONT_11, justification='r', size=(125, 1)),
-                   sg.Text(text=v[3], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], MONTH)),
-                   sg.Text(text=v[1], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME, v[1]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
-                   sg.Text(text=v[0], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], WEEK))
+                   sg.Text(text=v[3], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], MONTH_TAG)),
+                   sg.Text(text=v[1], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[1]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
+                   sg.Text(text=v[0], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], WEEK_TAG))
                    ] for v in sorted_volunteers]
 
     frame = sg.Frame('',  input_rows, font=FONT_12)
@@ -206,10 +113,10 @@ def create_volunteers_table(volunteers, week):
 
 def update_window(window, volunteers, week, combobox, text):
     for volunteer in volunteers:
-        element_week = window["{}|{}".format(volunteer.name, WEEK)]
+        element_week = window["{}|{}".format(volunteer.name, WEEK_TAG)]
         element_week.update(value=volunteer.weekly_status(week))
 
-        element_month = window["{}|{}".format(volunteer.name, MONTH)]
+        element_month = window["{}|{}".format(volunteer.name, MONTH_TAG)]
         element_month.update(value=volunteer.monthly_status())
 
     window[combobox].update(value="")
@@ -218,5 +125,5 @@ def update_window(window, volunteers, week, combobox, text):
 
 def refresh_table(window, volunteers):
     for volunteer in volunteers.values():
-        element_month = window["{}|{}".format(volunteer.name, MONTH)]
+        element_month = window["{}|{}".format(volunteer.name, MONTH_TAG)]
         element_month.update(value=volunteer.monthly_status())

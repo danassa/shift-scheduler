@@ -1,5 +1,5 @@
 from dateutil.relativedelta import *
-from datetime import timedelta, date, datetime
+from datetime import timedelta, date
 
 
 def get_day_name(x):
@@ -26,8 +26,8 @@ def get_last_saturday(month, year):
     return first_sunday_of_next_month - timedelta(days=1)
 
 
-def get_day_type(date):
-    day = date.weekday()
+def get_day_type(dt):
+    day = dt.weekday()
     if day == 5:
         return 'שבת'
     if day == 4:

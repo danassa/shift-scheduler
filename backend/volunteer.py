@@ -1,5 +1,5 @@
 import logging
-from backend.utilities import get_day_name
+from backend.date_utilities import get_day_name
 from collections import defaultdict
 
 
@@ -53,7 +53,6 @@ class Volunteer:
             for slot in self.assigned_slots[week][1]:
                 if slot not in self.optional_slots[week][1]:
                     slot.release_assignment()
-
 
     def remove_optional_slot(self, slot, week):
         for s in self.optional_slots[week][1]:
