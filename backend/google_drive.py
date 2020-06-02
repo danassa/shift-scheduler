@@ -33,11 +33,19 @@ def get_column(sheet, index):
 
 def update_schedule_sheet(values, first_date):
     spreadsheet = get_spreadsheet_from_drive(SCHEDULE_SPREADSHEET)
-    transposed = [[] for _ in range(max(len(row) for row in values))]
-    for row in values:
-        for x, res_row in zip(row, transposed):
-            res_row.append(x)
+    max_elements = max(len(row) for row in values)
+    result = []
+    for i in range(0, max_elements):
+        res_row = []
+        for row in values:
+            try:
+                field = row[i]
+            except:
+                field = ""
+            res_row.append(field)
+        result.append(res_row)
 
     title = "{}/{}".format(first_date.month, first_date.year)
     spreadsheet.get_worksheet(0).duplicate(insert_sheet_index=0, new_sheet_name=title)
-    spreadsheet.get_worksheet(0).update(transposed)
+    spreadsheet.get_worksheet(0).update(result)
+

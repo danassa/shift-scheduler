@@ -8,22 +8,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 
-def email_shifts_to_volunteers(volunteers, url):
-    credentials = get_email_credentials()
-    service = build('gmail', 'v1', credentials=credentials)
-    root_test = "<p dir='rtl'> פורסמו המשמרות לחודש הבא. ניתן למצוא את לוח המשמרות המלא כאן: {}<br><br>המשמרות שלך:<br>".format(url)
-    message_text = root_test
-    for name in volunteers.keys():
-        volunteer = volunteers[name]
-        for week in volunteer.assigned_slots:
-            for slot in volunteer.assigned_slots[week][1]:
-                message_text += "{}<br>".format(str(slot))
-        message_text += "</p>"
-        send_email(service, [volunteer.email_shifts_to_volunteers], "משמרות סהר", message_text)
-        message_text = root_test
-
-
-def send_email(service, addresses, subject, message_text):
+def send_email(addresses, subject, message_text):
     message = MIMEText(message_text, 'html')
     message['to'] = ",".join(addresses)
     message['from'] = "sahar-service-account@sahar-schedule.iam.gserviceaccount.com"
@@ -58,3 +43,7 @@ def get_email_credentials():
             pickle.dump(credentials, token)
 
     return credentials
+
+
+credentials = get_email_credentials()
+service = build('gmail', 'v1', credentials=credentials)

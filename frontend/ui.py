@@ -1,5 +1,7 @@
+from datetime import timedelta
 import PySimpleGUI as sg
-from backend.general import *
+from backend.date_utilities import get_day_name
+from backend.data import Data
 from backend.hard_drive import restore_old_values
 from constants import *
 
@@ -12,7 +14,7 @@ def switch_week_window(week_windows, volunteers, new_index, old_index):
     return calendar_window
 
 
-def create_week_window(first_date, last_date, calendar, volunteers):
+def create_week_window(first_date, last_date, data):
     dates = []
     curr_date = last_date
     while curr_date >= first_date:
@@ -26,7 +28,7 @@ def create_week_window(first_date, last_date, calendar, volunteers):
         color_index = 0
 
         formatted_date = curr_date.strftime(DATE_FORMAT)
-        for slot in calendar[curr_date]:
+        for slot in data.calendar.slots_by_date[curr_date]:
             new_time = slot.time
             if new_time != time:
                 column += [sg.Text(new_time, size=(18, 1), justification='r', font=FONT_11,
@@ -47,7 +49,7 @@ def create_week_window(first_date, last_date, calendar, volunteers):
 
     screen_width, screen_height = sg.Window.get_screen_size()
 
-    table = create_volunteers_table(volunteers, slot.week)
+    table = create_volunteers_table(data.volunteers, slot.week)
     calendar_window = sg.Window(TITLE, element_justification='c', alpha_channel=0,
                                 size=(screen_width-40, screen_height-60), resizable=True).Layout(
         [[sg.Menu([[MENU_TITLE, [MENU_NEW, MENU_SAVE, MENU_UPDATE, MENU_CLOSE]]])],
@@ -60,21 +62,13 @@ def create_week_window(first_date, last_date, calendar, volunteers):
     return calendar_window, table
 
 
-def pull_data():
-    try:
-        dates, calendar, volunteers = restore_old_values()
-    except:
-        dates, calendar, volunteers = create_new_values()
-    return dates, calendar, volunteers
-
-
-def initialize_windows(dates, calendar, volunteers):
+def initialize_windows(data):
     windows = []
-    last_date = dates[LAST_D]
-    first_date_in_week = dates[FIRST_D]
+    last_date = data.calendar.last_date
+    first_date_in_week = data.calendar.first_date
     last_date_in_week = first_date_in_week + timedelta(days=6)
     while last_date_in_week <= last_date:
-        window, table = create_week_window(first_date_in_week, last_date_in_week, calendar, volunteers)
+        window, table = create_week_window(first_date_in_week, last_date_in_week, data)
         windows.append(window)
         window.finalize()
         table.expand(False, True, True)
@@ -82,7 +76,7 @@ def initialize_windows(dates, calendar, volunteers):
         window.hide()
         first_date_in_week = last_date_in_week + timedelta(days=1)
         last_date_in_week = first_date_in_week + timedelta(days=6)
-    return windows, calendar, volunteers
+    return windows
 
 
 def create_volunteers_header():
