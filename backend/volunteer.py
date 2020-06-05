@@ -1,5 +1,5 @@
 import logging
-from backend.date_utilities import get_day_name
+from utils.dates import get_day_name
 from collections import defaultdict
 
 

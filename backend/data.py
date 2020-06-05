@@ -1,8 +1,8 @@
 from backend.calendar import Calendar
-from backend.emails import send_email
-from backend.google_drive import *
+from utils.emails import send_email
+from utils.google_drive import *
 from backend.volunteer import Volunteer
-from constants import *
+from utils.constants import *
 
 
 class Data:

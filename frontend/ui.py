@@ -1,9 +1,7 @@
 from datetime import timedelta
 import PySimpleGUI as sg
-from backend.date_utilities import get_day_name
-from backend.data import Data
-from backend.hard_drive import restore_old_values
-from constants import *
+from utils.dates import get_day_name
+from utils.constants import *
 
 
 def switch_week_window(week_windows, volunteers, new_index, old_index):

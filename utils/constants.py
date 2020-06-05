@@ -36,7 +36,7 @@ SHORT_DATE_FORMAT = "%d.%m"
 
 META_FILE = "resources/pickles/meta.pkl"
 CALENDAR_FILE = "resources/pickles/calendar.pkl"
-VOLUNTEERS_FILE = "resources/pickles/volunteers.pkl"
+VOLUNTEERS_FILE = "../resources/pickles/volunteers.pkl"
 
 MENU_TITLE = 'תפריט'
 MENU_NEW = 'צור לוח חדש'

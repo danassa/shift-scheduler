@@ -1,6 +1,6 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from constants import SCHEDULE_SPREADSHEET
+from utils.constants import SCHEDULE_SPREADSHEET
 
 
 def get_spreadsheet_from_drive(filename):
