@@ -24,7 +24,8 @@ def start(data):
         try:
             events, values = calendar_window.read()
             if events is None or events == EXIT:
-                response = sg.popup_yes_no(MSG_SAVE)
+                response = sg.popup_yes_no("hello")
+                print("hi")
                 if response == YES:
                     save(data)
                 break
