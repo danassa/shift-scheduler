@@ -7,6 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from src.utils.constants import AUTH_CLIENT
+import logging
 
 
 def send_email(addresses, subject, message_text):
@@ -20,7 +21,7 @@ def send_email(addresses, subject, message_text):
     try:
         service.users().messages().send(userId="me", body=encoded_message).execute()
     except HttpError as error:
-        print('An error occurred: %s' % error)
+        logging.error('An error occurred: %s' % error)
 
 
 def get_email_credentials():
