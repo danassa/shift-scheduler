@@ -48,7 +48,7 @@ def create_week_window(first_date, last_date, data):
     screen_width, screen_height = sg.Window.get_screen_size()
 
     table = create_volunteers_table(data.volunteers, slot.week)
-    calendar_window = sg.Window(TITLE, element_justification='c', alpha_channel=0,
+    calendar_window = sg.Window(TITLE, element_justification='c', alpha_channel=0, location=(0, 0),
                                 size=(screen_width-40, screen_height-60), resizable=True).Layout(
         [[sg.Menu([[MENU_TITLE, [MENU_NEW, MENU_SAVE, MENU_UPDATE, MENU_CLOSE]]])],
          [sg.Button(key=B_NEXT, image_filename=IMG_LEFT),
@@ -78,7 +78,7 @@ def initialize_windows(data):
 
 
 def create_volunteers_header():
-    header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(125, 1)),
+    header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(100, 1)),
                sg.Text('חודשי', font=FONT_11, justification='r', size=(10, 1)),
                sg.Text('שם', font=FONT_11, justification='r', size=(15, 1)),
                sg.Text('שבועי', font=FONT_11, justification='r', size=(10, 1))]]
@@ -91,7 +91,7 @@ def create_volunteers_table(volunteers, week):
     subset = [[v[week-1], v[5], v[6], v[7]] for v in data]
     sorted_volunteers = sorted(subset, key=lambda x: x[0])
 
-    input_rows = [[sg.Text(text=v[2], font=FONT_11, justification='r', size=(125, 1)),
+    input_rows = [[sg.Text(text=v[2], font=FONT_11, justification='r', size=(100, 1)),
                    sg.Text(text=v[3], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], MONTH_TAG)),
                    sg.Text(text=v[1], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[1]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
                    sg.Text(text=v[0], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], WEEK_TAG))
