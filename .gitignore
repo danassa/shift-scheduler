@@ -131,9 +131,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/resources/auth_service_account.json
-/resources/oauth_2_client_id.json
-/backend/token.pickle
+auth_service_account.json
+oauth_2_client_id.json
 token.pickle
 
 # pickled files

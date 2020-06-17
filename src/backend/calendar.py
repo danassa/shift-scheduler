@@ -1,8 +1,8 @@
-from utils.google_drive import get_sheet, get_data
-from utils.constants import MAIN_SHEET, MONTH, YEAR, DATE_FORMAT
-from utils.dates import get_first_sunday, get_last_saturday, get_day_type
-from backend.shift import Shift
-from backend.slot import Slot
+from src.utils.google_drive import get_sheet, get_data
+from src.utils.constants import MAIN_SHEET, MONTH, YEAR, DATE_FORMAT
+from src.utils.dates import get_first_sunday, get_last_saturday, get_day_type
+from src.backend.shift import Shift
+from src.backend.slot import Slot
 from datetime import timedelta, datetime
 
 

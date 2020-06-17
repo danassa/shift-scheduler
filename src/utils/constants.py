@@ -8,8 +8,11 @@ SCHEDULE_SPREADSHEET = "לוח משמרות"
 SUBMIT_SPREADSHEET = 'הגשת משמרות'
 SHIFTS_LINK = "https://docs.google.com/spreadsheets/d/1wDtBciOK6pJMfqF7saVEwYIfcousUv4VL_sU7iVq9HU/edit#gid=0"
 
-IMG_LEFT = "resources/left.gif"
-IMG_RIGHT = "resources/right.gif"
+AUTH_SERVICE = 'auth_service_account.json'
+AUTH_CLIENT = 'oauth_2_client_id.json'
+
+IMG_LEFT = "left.gif"
+IMG_RIGHT = "right.gif"
 
 FONT_11 = 'Ariel 12'
 FONT_12 = 'Ariel 13'
@@ -34,9 +37,7 @@ FIRST_D = 'first_date'
 DATE_FORMAT = "%d.%m.%Y"
 SHORT_DATE_FORMAT = "%d.%m"
 
-META_FILE = "resources/pickles/meta.pkl"
-CALENDAR_FILE = "resources/pickles/calendar.pkl"
-VOLUNTEERS_FILE = "../resources/pickles/volunteers.pkl"
+DATA_FILE = "data.pkl"
 
 MENU_TITLE = 'תפריט'
 MENU_NEW = 'צור לוח חדש'

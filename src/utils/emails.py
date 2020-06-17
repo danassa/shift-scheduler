@@ -6,6 +6,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from src.utils.constants import AUTH_CLIENT
 
 
 def send_email(addresses, subject, message_text):
@@ -36,7 +37,7 @@ def get_email_credentials():
         if credentials and credentials.expired and credentials.refresh_token:
             credentials.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('resources/oauth_2_client_id.json', scope)
+            flow = InstalledAppFlow.from_client_secrets_file(AUTH_CLIENT, scope)
             credentials = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:

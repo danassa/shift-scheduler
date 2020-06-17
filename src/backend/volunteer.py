@@ -1,5 +1,5 @@
 import logging
-from utils.dates import get_day_name
+from src.utils.dates import get_day_name
 from collections import defaultdict
 
 
@@ -71,7 +71,6 @@ class Volunteer:
         week[1].remove(slot)
         self.total_shifts = self.total_shifts - 1
 
-    #todo
     def is_valid_assignment(self, slot, gui_queue=None):
         error = None
         if self.total_shifts >= self.monthly_requests:
@@ -83,7 +82,7 @@ class Volunteer:
                 for curr_slot in week[1]:
                     delta = (curr_slot.date - slot.date).days
                     if -1 <= delta <= 1 and curr_slot != slot: #todo
-                        error = "{} כבר משובץ/ת למשמרת בתאריך {}".format(self.name, slot.date)
+                        error = "{} כבר משובץ/ת למשמרת בתאריך {}".format(self.name, curr_slot.date)
 
         if gui_queue is not None and error is not None:
             logging.error(error)

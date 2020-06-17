@@ -2,12 +2,12 @@ import queue
 from numbers import Number
 import PySimpleGUI as sg
 from gspread.exceptions import APIError
-from utils.google_drive import update_schedule_sheet
-from utils.hard_drive import save
-from frontend.hebrew_popup import HebrewPopup
-from backend.data import Data
-from utils.constants import *
-from frontend.ui import initialize_windows, switch_week_window, update_window
+from src.utils.google_drive import update_schedule_sheet
+from src.utils.hard_drive import save
+from src.frontend.hebrew_popup import HebrewPopup
+from src.backend.data import Data
+from src.frontend.ui import initialize_windows, switch_week_window, update_window
+from src.utils.constants import *
 
 
 def start(data):

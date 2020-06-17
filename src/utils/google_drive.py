@@ -1,11 +1,11 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-from utils.constants import SCHEDULE_SPREADSHEET
+from src.utils.constants import SCHEDULE_SPREADSHEET, AUTH_SERVICE
 
 
 def get_spreadsheet_from_drive(filename):
     scope = ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('resources/auth_service_account.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(AUTH_SERVICE, scope)
     client = gspread.authorize(credentials)
     spreadsheet = client.open(filename)
     return spreadsheet
