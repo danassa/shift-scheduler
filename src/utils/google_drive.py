@@ -1,6 +1,7 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from src.utils.constants import SCHEDULE_SPREADSHEET, AUTH_SERVICE
+import re
 
 
 def get_spreadsheet_from_drive(filename):
@@ -46,6 +47,13 @@ def update_schedule_sheet(values, first_date):
         result.append(res_row)
 
     title = "{}/{}".format(first_date.month, first_date.year)
-    spreadsheet.get_worksheet(0).duplicate(insert_sheet_index=0, new_sheet_name=title)
-    spreadsheet.get_worksheet(0).update(result)
+    new_sheet = get_sheet(spreadsheet, "Format").duplicate(insert_sheet_index=0, new_sheet_name=title)
+    new_sheet.update(result)
 
+    hours_cells = new_sheet.findall(re.compile(r'\d\d-\d\d'))
+    for cell in hours_cells:
+        new_sheet.format(cell.address, {"backgroundColor": {
+                "red": 	0.835,
+                "green": 0.6509,
+                "blue": 0.741
+            }})
