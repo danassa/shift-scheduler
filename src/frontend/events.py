@@ -65,7 +65,7 @@ def start(data):
                         if response != YES:
                             continue
                     update_schedule_sheet(values_to_publish, data.calendar.first_date)
-                    #volunteers.publish_shifts()
+                    data.publish_shifts()
                     HebrewPopup(MSG_DONE, title=TITLE_DONE, non_blocking=False)
                     break
                 except APIError as e:
