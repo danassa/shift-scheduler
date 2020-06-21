@@ -18,9 +18,9 @@ def create_week_window(first_date, last_date, data):
     while curr_date >= first_date:
         column = []
         column += [sg.Text(curr_date.strftime(SHORT_DATE_FORMAT),
-                           size=(14, 1), justification='c', font=FONT_14, pad=(5, 0))],
+                           size=(12, 1), justification='c', font=FONT_14, pad=(5, 0))],
         column += [sg.Text(get_day_name(curr_date.weekday()),
-                           size=(18, 1), justification='r', font=FONT_11, pad=(5, 0))],
+                           size=(15, 1), justification='r', font=FONT_11, pad=(5, 0))],
         time = None
         role_colors = {}
         color_index = 0
@@ -29,7 +29,7 @@ def create_week_window(first_date, last_date, data):
         for slot in data.calendar.slots_by_date[curr_date]:
             new_time = slot.time
             if new_time != time:
-                column += [sg.Text(new_time, size=(18, 1), justification='r', font=FONT_11,
+                column += [sg.Text(new_time, size=(15, 1), justification='r', font=FONT_11,
                                    text_color="white", background_color=sg.theme_button_color()[1])],
                 time = new_time
 
@@ -41,7 +41,7 @@ def create_week_window(first_date, last_date, data):
 
             column += [sg.Combo(key="{}|{}|{}|{}".format(formatted_date, time, slot.role, slot.person),
                                 values=slot.get_names(), default_value=slot.get_value(), enable_events=True,
-                                size=(17, 1), pad=(5, 1), font=FONT_11, background_color=color)],
+                                size=(14, 1), pad=(5, 1), font=FONT_11, background_color=color)],
         dates.append(sg.Column(column))
         curr_date = curr_date - timedelta(days=1)
 
@@ -81,20 +81,22 @@ def create_volunteers_header():
     header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(100, 1)),
                sg.Text('חודשי', font=FONT_11, justification='r', size=(10, 1)),
                sg.Text('שם', font=FONT_11, justification='r', size=(15, 1)),
-               sg.Text('שבועי', font=FONT_11, justification='r', size=(10, 1))]]
+               sg.Text('שבועי', font=FONT_11, justification='r', size=(10, 1)),
+               sg.Text('אופציות', font=FONT_11, justification='r', size=(5, 1))]]
     frame = sg.Frame('מתנדבים', header, font=FONT_12, title_location=sg.TITLE_LOCATION_TOP)
     return sg.Column([[frame]])
 
 
 def create_volunteers_table(volunteers, week):
     data = [v.get_table_data() for v in volunteers.values()]
-    subset = [[v[week-1], v[5], v[6], v[7]] for v in data]
-    sorted_volunteers = sorted(subset, key=lambda x: x[0])
+    subset = [[v[week-1][1], v[week-1][0], v[5], v[6], v[7]] for v in data]
+    sorted_volunteers = sorted(subset)
 
-    input_rows = [[sg.Text(text=v[2], font=FONT_11, justification='r', size=(100, 1)),
-                   sg.Text(text=v[3], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], MONTH_TAG)),
-                   sg.Text(text=v[1], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[1]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
-                   sg.Text(text=v[0], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[1], WEEK_TAG))
+    input_rows = [[sg.Text(text=v[3], font=FONT_11, justification='r', size=(100, 1)),
+                   sg.Text(text=v[4], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[2], MONTH_TAG)),
+                   sg.Text(text=v[2], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[2]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
+                   sg.Text(text=v[1], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[2], WEEK_TAG)),
+                   sg.Text(text=v[0], font=FONT_11, justification='r', size=(5, 1))
                    ] for v in sorted_volunteers]
 
     frame = sg.Frame('',  input_rows, font=FONT_12)

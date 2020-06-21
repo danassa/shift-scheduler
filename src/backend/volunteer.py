@@ -10,14 +10,14 @@ class Volunteer:
         self.email = email
         self.role = role
         self.comments = comments
-        self.monthly_requests = monthly
+        self.monthly_requests = self.validate_input(monthly, 100)
         self.privileged = privileged == "TRUE"
         self.optional_slots = {
-            1: [weekly1, []],
-            2: [weekly2, []],
-            3: [weekly3, []],
-            4: [weekly4, []],
-            5: [weekly5, []]
+            1: [self.validate_input(weekly1, self.monthly_requests), []],
+            2: [self.validate_input(weekly2, self.monthly_requests), []],
+            3: [self.validate_input(weekly3, self.monthly_requests), []],
+            4: [self.validate_input(weekly4, self.monthly_requests), []],
+            5: [self.validate_input(weekly5, self.monthly_requests), []]
         }
         self.assigned_slots = {
             1: [0, []],
@@ -27,6 +27,13 @@ class Volunteer:
             5: [0, []]
         }
         self.total_shifts = 0
+
+    def validate_input(self, requests, default):
+        try:
+            result = int(requests)
+            return result
+        except:
+            return default
 
     def add_optional_slot(self, slot):
         week = self.optional_slots[slot.week]
@@ -95,12 +102,16 @@ class Volunteer:
     def monthly_status(self):
         return "{}/{}".format(self.total_shifts, self.monthly_requests)
 
+    def weekly_options(self, week):
+        res = map(lambda x: str(x), self.optional_slots[week][1])
+        return "{}".format(len(set(res)))
+
     def get_table_data(self):
-        data = [self.weekly_status(1),
-                self.weekly_status(2),
-                self.weekly_status(3),
-                self.weekly_status(4),
-                self.weekly_status(5),
+        data = [[self.weekly_status(1), self.weekly_options(1)],
+                [self.weekly_status(2), self.weekly_options(2)],
+                [self.weekly_status(3), self.weekly_options(3)],
+                [self.weekly_status(4), self.weekly_options(4)],
+                [self.weekly_status(5), self.weekly_options(5)],
                 self.name,
                 self.comments,
                 self.monthly_status()
