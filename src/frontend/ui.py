@@ -79,9 +79,9 @@ def initialize_windows(data):
 
 def create_volunteers_header():
     header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(100, 1)),
-               sg.Text('חודשי', font=FONT_11, justification='r', size=(10, 1)),
+               sg.Text('חודשי', font=FONT_11, justification='r', size=(6, 1)),
                sg.Text('שם', font=FONT_11, justification='r', size=(15, 1)),
-               sg.Text('שבועי', font=FONT_11, justification='r', size=(10, 1)),
+               sg.Text('שבועי', font=FONT_11, justification='r', size=(6, 1)),
                sg.Text('אופציות', font=FONT_11, justification='r', size=(5, 1))]]
     frame = sg.Frame('מתנדבים', header, font=FONT_12, title_location=sg.TITLE_LOCATION_TOP)
     return sg.Column([[frame]])
@@ -93,9 +93,9 @@ def create_volunteers_table(volunteers, week):
     sorted_volunteers = sorted(subset)
 
     input_rows = [[sg.Text(text=v[3], font=FONT_11, justification='r', size=(100, 1)),
-                   sg.Text(text=v[4], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[2], MONTH_TAG)),
+                   sg.Text(text=v[4], font=FONT_11, justification='r', size=(6, 1), key="{}|{}".format(v[2], MONTH_TAG)),
                    sg.Text(text=v[2], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[2]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
-                   sg.Text(text=v[1], font=FONT_11, justification='r', size=(10, 1), key="{}|{}".format(v[2], WEEK_TAG)),
+                   sg.Text(text=v[1], font=FONT_11, justification='r', size=(6, 1), key="{}|{}".format(v[2], WEEK_TAG)),
                    sg.Text(text=v[0], font=FONT_11, justification='r', size=(5, 1))
                    ] for v in sorted_volunteers]
 
