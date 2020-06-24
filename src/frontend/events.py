@@ -47,6 +47,12 @@ def start(data):
                 HebrewPopup(MSG_SAVE_1, MSG_SAVE_2, non_blocking=False)
                 break
 
+            elif events == MENU_ASSIGN:
+                data.auto_assignments()
+                save(data)
+                HebrewPopup(MSG_SAVE_1, MSG_SAVE_3, non_blocking=False)
+                break
+
             elif events == B_NEXT:
                 if index < len(week_windows)-1:
                     index = index + 1
@@ -75,7 +81,7 @@ def start(data):
                 parts = events.split("|")
                 if parts[0] == NAME_TAG:
                     volunteer = data.volunteers[parts[1]]
-                    HebrewPopup(volunteer.get_options_as_string(index + 1), volunteer.get_assignments_as_string(index + 1),
+                    HebrewPopup(volunteer.comments, volunteer.get_options_as_string(index + 1), volunteer.get_assignments_as_string(index + 1),
                                 title=volunteer.name, font=FONT_12)
                 else:
                     pick = values[events]

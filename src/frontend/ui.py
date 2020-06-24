@@ -50,7 +50,7 @@ def create_week_window(first_date, last_date, data):
     table = create_volunteers_table(data.volunteers, slot.week)
     calendar_window = sg.Window(TITLE, element_justification='c', alpha_channel=0, location=(0, 0),
                                 size=(screen_width-40, screen_height-60), resizable=True).Layout(
-        [[sg.Menu([[MENU_TITLE, [MENU_NEW, MENU_SAVE, MENU_UPDATE, MENU_CLOSE]]])],
+        [[sg.Menu([[MENU_TITLE, [MENU_NEW, MENU_SAVE, MENU_UPDATE, MENU_ASSIGN, MENU_CLOSE]]])],
          [sg.Button(key=B_NEXT, image_filename=IMG_LEFT),
           sg.Column([dates]),
           sg.Button(key=B_PREV, image_filename=IMG_RIGHT)],

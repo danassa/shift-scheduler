@@ -17,7 +17,6 @@ class Data:
         self.calendar = Calendar(self.spreadsheet)
         self.volunteers = self.populate_volunteers()
 
-        self.auto_assignments()
 
     def update_spreadsheet(self):
         self.spreadsheet = get_spreadsheet_from_drive(SUBMIT_SPREADSHEET)
@@ -89,10 +88,23 @@ class Data:
     def auto_assignments(self):
         for key in self.calendar.slots_by_date.keys():
             for slot in self.calendar.slots_by_date[key]:
-                if len(slot.options) == 1:
+                if len(slot.assignment) == 0 and len(slot.options) == 1:
                     volunteer = slot.options[0]
                     if volunteer.is_valid_assignment(slot):
                         slot.assign_volunteer(volunteer)
+        for volunteer in self.volunteers.values():
+            for week in range(1, 6):
+                if int(volunteer.weekly_options(week)) == 1:
+                    if volunteer.assigned_slots[week][0] == 0:
+                        slots = volunteer.optional_slots[week][1]
+                        i = 0
+                        while i < len(slots):
+                            slot = slots[i]
+                            if len(slot.assignment) == 0 and volunteer.is_valid_assignment(slot):
+                                slot.assign_volunteer(volunteer)
+                                i = len(slots)
+                            i += 1
+
 
     def publish_shifts(self):
         root_text = "<p dir='rtl'> פורסמו המשמרות לחודש הבא. ניתן למצוא את לוח המשמרות המלא כאן: {}<br><br>המשמרות שלך:<br>".format(
