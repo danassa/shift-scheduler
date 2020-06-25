@@ -30,7 +30,7 @@ def create_week_window(first_date, last_date, data):
             new_time = slot.time
             if new_time != time:
                 column += [sg.Text(new_time, size=(15, 1), justification='r', font=FONT_11,
-                                   text_color="white", background_color=sg.theme_button_color()[1])],
+                                   text_color="white", background_color=TIME_COLOR)],
                 time = new_time
 
             color = role_colors.get(slot.role)

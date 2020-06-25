@@ -1,7 +1,6 @@
 
 TITLE = 'סהר שיבוץ משמרות'
-THEME = 'Light Green 1'
-
+THEME = 'LightPurple'
 MAIN_SHEET = 'Manager'
 
 SCHEDULE_SPREADSHEET = "לוח משמרות"
@@ -19,7 +18,8 @@ FONT_12 = 'Ariel 13'
 FONT_14 = 'Ariel 15'
 FONT_LINK = 'Ariel 12 underline'
 
-COMBO_COLORS = ["#d0dbbd", "#F7F3EC"]
+COMBO_COLORS = ["#ddc0dd", "#f0e4f0"]
+TIME_COLOR = "#907390"
 
 NEW_MONTH = 'חודש חדש'
 OLD_MONTH = 'טען חודש קיים'
