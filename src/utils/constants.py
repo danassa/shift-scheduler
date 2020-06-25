@@ -39,17 +39,21 @@ SHORT_DATE_FORMAT = "%d.%m"
 
 DATA_FILE = "data.pkl"
 
-MENU_TITLE = 'תפריט'
+MENU_TITLE_1 = 'תפריט שיבוצים'
+MENU_TITLE_2 = 'תפריט סיום/התחלה'
+
 MENU_NEW = 'צור לוח חדש'
 MENU_SAVE = 'שמור שיבוצים'
-MENU_CLOSE = 'סגור לוז ופרסם'
+MENU_PUBLISH = 'פרסם משמרות'
+MENU_UPLOAD = 'העלה משמרות לגוגל'
+
 MENU_UPDATE = 'עדכן בקשות'
-MENU_ASSIGN = 'שיבוץ אוטומטי חלקי'
+MENU_ASSIGN = 'שבץ אוטומטית חלקית'
 EXIT = 'Exit'
 YES = 'Yes'
 
 MSG_FAIL = "נכשל בפרסום לוח המשמרות"
-MSG_DONE = "העלינו את השיבוצים ל-לוח משמרות- בגוגל-שיטס ושלחנו מיילים לכולם! נתראה בחודש הבא :)"
+MSG_DONE = "הושלם בהצלחה"
 TITLE_DONE = "סיום ויציאה"
 MSG_EMPTY_SLOTS = "ישנן משמרות ללא שיבוץ, ראה דוגמאות למטה. האם אתה עדיין מעוניין לפרסם את הלוח?"
 TITLE_EMPTY_SLOTS = "בטוח?"

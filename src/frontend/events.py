@@ -62,7 +62,7 @@ def start(data):
                     index = index - 1
                     calendar_window = switch_week_window(week_windows, data.volunteers, index, index + 1)
 
-            elif events == MENU_CLOSE:
+            elif events == MENU_UPLOAD:
                 try:
                     values_to_publish, empty_slots = data.calendar.get_calender_values()
                     if empty_slots:
@@ -71,6 +71,13 @@ def start(data):
                         if response != YES:
                             continue
                     update_schedule_sheet(values_to_publish, data.calendar.first_date)
+                    HebrewPopup(MSG_DONE, title=TITLE_DONE, non_blocking=False)
+                    break
+                except APIError as e:
+                    HebrewPopup(MSG_FAIL, e.args[0]['message'], non_blocking=False)
+
+            elif events == MENU_PUBLISH:
+                try:
                     data.publish_shifts()
                     HebrewPopup(MSG_DONE, title=TITLE_DONE, non_blocking=False)
                     break

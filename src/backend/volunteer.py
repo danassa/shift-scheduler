@@ -89,7 +89,7 @@ class Volunteer:
                 for curr_slot in week[1]:
                     delta = (curr_slot.date - slot.date).days
                     if -1 <= delta <= 1 and curr_slot != slot: #todo
-                        error = "{} כבר משובץ/ת למשמרת בתאריך {}".format(self.name, curr_slot.date)
+                        error = "{} משובץ/ת למשמרת בתאריך {}".format(self.name, curr_slot.date)
 
         if gui_queue is not None and error is not None:
             logging.error(error)
