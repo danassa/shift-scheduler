@@ -1,4 +1,5 @@
 from math import floor
+from src.utils.constants import PLT
 
 
 class Slot:
@@ -80,5 +81,7 @@ class Slot:
 
     def __str__(self):
         # todo in windows:
-        # return "{} {}".format(self.date.strftime("%#d.%#m.%Y"), self.time)
-        return "{} {}".format(self.date.strftime("%-d.%-m.%Y"), self.time)
+        if PLT == "Windows":
+            return "{} {}".format(self.date.strftime("%#d.%#m.%Y"), self.time)
+        else:
+            return "{} {}".format(self.date.strftime("%-d.%-m.%Y"), self.time)

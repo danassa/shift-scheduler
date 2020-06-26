@@ -1,3 +1,6 @@
+import platform
+PLT = platform.system()
+
 
 TITLE = 'סהר שיבוץ משמרות'
 THEME = 'LightPurple'
