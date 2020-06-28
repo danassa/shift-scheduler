@@ -137,3 +137,5 @@ class Volunteer:
             result = result + key + ": {}".format(str(value).replace("'", "")[1:-1]) + "\n"
         return result
 
+    def get_weekly_and_monthly_str(self, week):
+        return "בקשות:  שבועי- {} |  חודשי- {}".format(self.optional_slots[week][0], self.monthly_requests)

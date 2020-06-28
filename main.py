@@ -21,4 +21,7 @@ if __name__ == "__main__":
     except FileNotFoundError:
         data = Data()
 
-    start(data)
+    try:
+        start(data)
+    except Exception as e:
+        logging.error(e, exc_info=True)

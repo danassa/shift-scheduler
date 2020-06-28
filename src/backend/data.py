@@ -44,6 +44,9 @@ class Data:
             volunteers.update({volunteer.name: volunteer})
         return volunteers
 
+    def get_volunteers_names(self):
+        return self.volunteers.keys()
+
     def create_volunteer(self, role, row):
         volunteer = Volunteer(row[NAME], row[MAIL], role, row[COMMENTS], row[HALFS], row[MONTHLY],
                               row[WEEKLY_1], row[WEEKLY_2], row[WEEKLY_3], row[WEEKLY_4], row[WEEKLY_5])
@@ -104,7 +107,6 @@ class Data:
                                 slot.assign_volunteer(volunteer)
                                 i = len(slots)
                             i += 1
-
 
     def publish_shifts(self):
         root_text = "<p dir='rtl'> פורסמו המשמרות לחודש הבא. ניתן למצוא את לוח המשמרות המלא כאן: {}<br><br>המשמרות שלך:<br>".format(

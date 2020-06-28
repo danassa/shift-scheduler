@@ -30,6 +30,7 @@ OLD_MONTH = 'טען חודש קיים'
 MONTH_TAG = 'month'
 WEEK_TAG = 'week'
 NAME_TAG = 'name'
+SEARCH = 'search'
 
 B_NEXT = 'next'
 B_PREV = 'prev'

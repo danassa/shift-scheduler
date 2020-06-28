@@ -6,7 +6,7 @@ from src.utils.google_drive import update_schedule_sheet
 from src.utils.hard_drive import save
 from src.frontend.hebrew_popup import HebrewPopup
 from src.backend.data import Data
-from src.frontend.ui import initialize_windows, switch_week_window, update_window
+from src.frontend.ui import initialize_windows, switch_week_window, update_window, update_details
 from src.utils.constants import *
 
 
@@ -84,6 +84,8 @@ def start(data):
                 except APIError as e:
                     HebrewPopup(MSG_FAIL, e.args[0]['message'], non_blocking=False)
 
+            elif events == SEARCH:
+                update_details(week_windows, data.volunteers[values[SEARCH]])
             else:
                 parts = events.split("|")
                 if parts[0] == NAME_TAG:

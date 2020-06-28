@@ -46,8 +46,11 @@ def create_week_window(first_date, last_date, data):
         curr_date = curr_date - timedelta(days=1)
 
     screen_width, screen_height = sg.Window.get_screen_size()
+    week = slot.week
+    table = create_volunteers_table(data.volunteers, week)
+    list_frame = sg.Frame('', [[create_volunteers_header()], [table]])
+    details = create_details(data.volunteers, week)
 
-    table = create_volunteers_table(data.volunteers, slot.week)
     calendar_window = sg.Window(TITLE, element_justification='c', alpha_channel=0, location=(0, 0),
                                 size=(screen_width-40, screen_height-80), resizable=True).Layout(
         [[sg.Menu([[MENU_TITLE_1, [MENU_SAVE, MENU_UPDATE, MENU_ASSIGN]],
@@ -55,8 +58,7 @@ def create_week_window(first_date, last_date, data):
          [sg.Button(key=B_NEXT, image_filename=IMG_LEFT),
           sg.Column([dates]),
           sg.Button(key=B_PREV, image_filename=IMG_RIGHT)],
-         [create_volunteers_header()],
-         [table]])
+         [list_frame, details]])
 
     return calendar_window, table
 
@@ -79,7 +81,7 @@ def initialize_windows(data):
 
 
 def create_volunteers_header():
-    header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(100, 1)),
+    header = [[sg.Text('הערות', font=FONT_11, justification='r', size=(40, 1)),
                sg.Text('חודשי', font=FONT_11, justification='r', size=(6, 1)),
                sg.Text('שם', font=FONT_11, justification='r', size=(15, 1)),
                sg.Text('שבועי', font=FONT_11, justification='r', size=(6, 1)),
@@ -93,7 +95,7 @@ def create_volunteers_table(volunteers, week):
     subset = [[v[week-1][1], v[week-1][0], v[5], v[6], v[7]] for v in data]
     sorted_volunteers = sorted(subset)
 
-    input_rows = [[sg.Text(text=v[3], font=FONT_11, justification='r', size=(100, 1)),
+    input_rows = [[sg.Text(text=v[3], font=FONT_11, justification='r', size=(40, 1)),
                    sg.Text(text=v[4], font=FONT_11, justification='r', size=(6, 1), key="{}|{}".format(v[2], MONTH_TAG)),
                    sg.Text(text=v[2], font=FONT_LINK, justification='r', size=(15, 1), key="{}|{}".format(NAME_TAG, v[2]), enable_events=True, tooltip="לחץ על מנת לראות שיבוצים"),
                    sg.Text(text=v[1], font=FONT_11, justification='r', size=(6, 1), key="{}|{}".format(v[2], WEEK_TAG)),
@@ -104,6 +106,33 @@ def create_volunteers_table(volunteers, week):
     column = sg.Column([[frame]], scrollable=True, vertical_scroll_only=True)
 
     return column
+
+def create_details(volunteers, week):
+    names = [*volunteers]
+    names.sort()
+    default = names[0]
+    column = []
+    column += [sg.Combo(key=SEARCH, values=names, default_value=default,
+                        enable_events=True, size=(50, 1), font=FONT_11)],
+    column += [sg.Multiline(default_text=volunteers[default].comments, key="details_comments",
+                           size=(50, 2), enable_events=False, font=FONT_11)],
+    column += [sg.Text(volunteers[default].get_weekly_and_monthly_str(week), key="details_requests",
+                        size=(50, 1), justification='r', font=FONT_11)],
+    column += [sg.Text(volunteers[default].get_options_as_string(week), key="details_options",
+                       size=(50, 7), justification='r', font=FONT_11)],
+    column += [sg.Text(volunteers[default].get_assignments_as_string(week), key="details_assignments",
+                       size=(50, 3), justification='r', font=FONT_11)],
+
+    return sg.Column(column, justification='r')
+
+
+def update_details(week_windows, volunteer):
+    for week in range(0, len(week_windows)):
+        week_windows[week][SEARCH].update(value=volunteer.name)
+        week_windows[week]["details_comments"].update(value=volunteer.comments)
+        week_windows[week]["details_requests"].update(value=volunteer.get_weekly_and_monthly_str(week+1))
+        week_windows[week]["details_options"].update(value=volunteer.get_options_as_string(week+1))
+        week_windows[week]["details_assignments"].update(value=volunteer.get_assignments_as_string(week+1))
 
 
 def update_window(window, volunteers, week, combobox, text):
