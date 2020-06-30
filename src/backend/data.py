@@ -118,4 +118,4 @@ class Data:
                 for slot in volunteer.assigned_slots[week][1]:
                     message_text += "{}<br>".format(str(slot))
             message_text += "</p>"
-            send_email([volunteer.email_shifts_to_volunteers], "משמרות סהר", message_text)
+            send_email(volunteer.email, "משמרות סהר", message_text)

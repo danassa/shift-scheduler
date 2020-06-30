@@ -10,9 +10,9 @@ from src.utils.constants import AUTH_CLIENT
 import logging
 
 
-def send_email(addresses, subject, message_text):
+def send_email(address, subject, message_text):
     message = MIMEText(message_text, 'html')
-    message['to'] = ",".join(addresses)
+    message['to'] = address
     message['from'] = "sahar-service-account@sahar-schedule.iam.gserviceaccount.com"
     message['subject'] = subject
 
@@ -21,12 +21,12 @@ def send_email(addresses, subject, message_text):
     try:
         service.users().messages().send(userId="me", body=encoded_message).execute()
     except HttpError as error:
-        logging.error('An error occurred: %s' % error)
+        logging.error('An error occurred: %s' % error, exc_info=True)
 
 
 def get_email_credentials():
     credentials = None
-    scope = ['https://www.googleapis.com/auth/gmail.readonly', 'https://www.googleapis.com/auth/gmail.compose']
+    scope = ['https://www.googleapis.com/auth/gmail.send']
 
     # The file token.pickle stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first time.
