@@ -80,7 +80,6 @@ class Slot:
         return values[1] == self.time and values[2] == self.role and int(values[3]) == self.person
 
     def __str__(self):
-        # todo in windows:
         if PLT == "Windows":
             return "{} {}".format(self.date.strftime("%#d.%#m.%Y"), self.time)
         else:

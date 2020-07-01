@@ -115,7 +115,8 @@ class Data:
             message_text = root_text
             volunteer = self.volunteers[name]
             for week in volunteer.assigned_slots:
+                volunteer.assigned_slots[week][1].sort(key=lambda s: (s.date, s.time))
                 for slot in volunteer.assigned_slots[week][1]:
-                    message_text += "{}<br>".format(str(slot))
+                    message_text += "{}<br>".format(str(slot).replace(" ", "   "))
             message_text += "</p>"
             send_email(volunteer.email, "משמרות סהר", message_text)
