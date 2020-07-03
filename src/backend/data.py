@@ -81,7 +81,7 @@ class Data:
             if row[NAME] in names:
                 volunteer = self.volunteers[row[NAME]]
                 volunteer.update_meta_data(row[WEEKLY_1], row[WEEKLY_2], row[WEEKLY_3], row[WEEKLY_4], row[WEEKLY_5],
-                                           row[MONTHLY], row[COMMENTS])
+                                           row[MONTHLY], row[COMMENTS], row[HALFS])
                 self.update_volunteer_options(volunteer, row)
                 volunteer.remove_invalid_assignments()
             else:

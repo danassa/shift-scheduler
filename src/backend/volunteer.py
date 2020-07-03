@@ -48,10 +48,12 @@ class Volunteer:
             5: [weekly5, []]
         }
 
-    def update_meta_data(self, weekly1, weekly2, weekly3, weekly4, weekly5, monthly, comments):
+    def update_meta_data(self, weekly1, weekly2, weekly3, weekly4, weekly5, monthly, comments, privileged):
         self.clear_optional_slots(weekly1, weekly2, weekly3, weekly4, weekly5)
         self.monthly_requests = monthly
         self.comments = comments
+        self.privileged = privileged == "TRUE"
+
 
     ##############################################################
 

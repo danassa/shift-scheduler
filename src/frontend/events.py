@@ -6,7 +6,7 @@ from src.utils.google_drive import update_schedule_sheet
 from src.utils.hard_drive import save
 from src.frontend.hebrew_popup import HebrewPopup
 from src.backend.data import Data
-from src.frontend.ui import initialize_windows, switch_week_window, update_window, update_details
+from src.frontend.ui import initialize_windows, switch_week_window, update_window, update_details, refresh_details
 from src.utils.constants import *
 
 
@@ -106,6 +106,7 @@ def start(data):
                         data.volunteers[v.name] = v
 
                     update_window(calendar_window, changed_volunteers, index + 1, events, slot.get_value())
+                    refresh_details(week_windows, data.volunteers)
 
             try:
                 response = gui_queue.get_nowait()
