@@ -37,7 +37,7 @@ class Data:
 
     def get_volunteers_requests(self, role):
         sheet = get_sheet(self.spreadsheet, role)
-        data = get_data(sheet)
+        data = get_data(sheet)[1:]
         volunteers = {}
         for row in data:
             volunteer = self.create_volunteer(role, row)
@@ -73,7 +73,7 @@ class Data:
 
     def update_volunteers_requests(self, role):
         sheet = get_sheet(self.spreadsheet, role)
-        data = get_data(sheet)
+        data = get_data(sheet)[1:]
 
         names = self.volunteers.keys()
 

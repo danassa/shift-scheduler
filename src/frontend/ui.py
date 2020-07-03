@@ -67,6 +67,7 @@ def create_week_window(first_date, last_date, data):
     calendar_window.set_alpha(1)
     calendar_window.hide()
 
+    list_frame.expand(False, True, True)
     table.expand(False, True, True)
     details_frame.expand(False, True, True)
     details.expand(False, True, True)
