@@ -2,6 +2,7 @@ from src.backend.data import Data
 from src.utils.hard_drive import restore_old_values
 from src.frontend.events import start
 import logging
+import sys
 
 
 logFormatter = logging.Formatter("%(asctime)s %(levelname)s:%(funcName)s %(message)s")
@@ -13,6 +14,7 @@ logger.setLevel(logging.INFO)
 logger.addHandler(fileHandler)
 logger.addHandler(streamHandler)
 
+sys.setrecursionlimit(10000)
 
 if __name__ == "__main__":
 

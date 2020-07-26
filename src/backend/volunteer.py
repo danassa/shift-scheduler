@@ -81,6 +81,7 @@ class Volunteer:
         self.total_shifts = self.total_shifts - 1
 
     def is_valid_assignment(self, slot, gui_queue=None):
+        logging.info("validating assignment of {} for the {}".format(self.name, slot.__str__()))
         error = None
         if self.total_shifts >= self.monthly_requests:
             error = "מספר המשמרות החודשי של {} חוצה את {} המשמרות המבוקשות".format(self.name, self.monthly_requests)

@@ -2,9 +2,9 @@ import dill
 from src.utils.constants import DATA_FILE
 
 
-def save(volunteers):
+def save(data):
     with open(DATA_FILE, "wb") as dill_file:
-        dill.dump(volunteers, dill_file)
+        dill.dump(data, dill_file)
 
 
 def restore_old_values():
