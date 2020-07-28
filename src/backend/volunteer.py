@@ -32,7 +32,8 @@ class Volunteer:
         try:
             result = int(requests)
             return result
-        except:
+        except ValueError as e:
+            logging.error("{} is not a number. using the default {} instead.".format(requests, default))
             return default
 
     def add_optional_slot(self, slot):
