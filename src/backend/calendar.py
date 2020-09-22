@@ -1,5 +1,5 @@
 from src.utils.google_drive import get_sheet, get_data
-from src.utils.constants import MAIN_SHEET, MONTH, YEAR, DATE_FORMAT
+from src.utils.constants import MAIN_SHEET, MONTH, YEAR, DATE_FORMAT, PLT
 from src.utils.dates import get_first_sunday, get_last_saturday, get_day_type
 from src.backend.shift import Shift
 from src.backend.slot import Slot
@@ -59,7 +59,7 @@ class Calendar:
         curr_date = self.first_date
         while curr_date <= self.last_date:
             time = None
-            column = [curr_date.strftime("%-d.%-m.%Y")]
+            column = [self.get_as_date_str(curr_date)]
             for slot in self.slots_by_date[curr_date]:
                 if slot.time != time:
                     time = slot.time
@@ -75,6 +75,12 @@ class Calendar:
             curr_date = curr_date + timedelta(days=1)
 
         return values, empty_slots
+
+    def get_as_date_str(self, curr_date):
+        if PLT == "Windows":
+            return curr_date.strftime("%#d.%#m.%Y")
+        else:
+            return curr_date.strftime("%-d.%-m.%Y")
 
 
     def find_slot_by_drop_down_string(self, values):
